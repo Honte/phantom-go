@@ -5,12 +5,20 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    games: [
-      { id: 1, name: 'Sample 1' },
-      { id: 2, name: 'Sample 2' },
-      { id: 3, name: 'Sample 3' }
-    ]
+    games: []
   },
-  mutations: {},
-  actions: {}
+  mutations: {
+    updateGames(state, { games, offset, limit }) {
+      state.games.splice(offset, limit, ...games);
+    },
+    updateGame(state, game) {
+      const currentGame = state.games.find((g) => g.id === game.id);
+
+      if (currentGame) {
+        Object.assign(currentGame, game);
+      } else {
+        state.games.push(game);
+      }
+    }
+  }
 });

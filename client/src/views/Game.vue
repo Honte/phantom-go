@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div v-if="game">
     <h2>Game {{ game.name }}</h2>
 
     <Goban ref="goban"
-           size="19"
+           :size="19"
            width="600"
            height="600"
            @mousemove.native="onBoardHover($event)"
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+  import api from '@/api';
   import Goban from '@/components/Goban/Goban.vue';
   import Stone from '@/components/Goban/Stone.vue';
 
@@ -71,6 +72,13 @@
           },
         ]
       }
+    },
+
+    beforeRouteEnter(to, from, next) {
+      api.fetchGame(to.params.id)
+        .then((game) => {
+          next((vm) => vm.$store.commit('updateGame', game));
+        });
     },
 
     computed: {

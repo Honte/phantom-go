@@ -7,3 +7,20 @@
     </ul>
   </div>
 </template>
+
+<script>
+  import api from '@/api';
+
+  export default {
+    created() {
+      this.fetchGames();
+    },
+
+    methods: {
+      fetchGames() {
+        api.fetchGames()
+          .then((response) => this.$store.commit('updateGames', response));
+      }
+    }
+  }
+</script>
